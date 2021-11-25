@@ -48,7 +48,7 @@ public class Payload {
         int n = payload[2] & (byte) 0x0F;
         int offset = 4;
         if ((payload[2] & 0x10) == 0x10) {
-            fullLength = (payload[3] << 8) | payload[4];
+            fullLength = ((payload[3] & 0xff) << 8) | (payload[4] & 0xff);
             offset++;
         } else {
             fullLength = payload[3];
@@ -72,7 +72,7 @@ public class Payload {
         int fullLength = 5;
         assert payload[0] == (byte) 0xFF;
         if ((payload[2] & 0x10) == 0x10) {
-            fullLength = (payload[3] << 8) | payload[4];
+            fullLength = ((payload[3] & 0xff) << 8) | (payload[4] & 0xff);
         } else {
             fullLength = payload[3];
         }

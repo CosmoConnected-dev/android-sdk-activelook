@@ -28,7 +28,7 @@ public class ConfigurationElementsInfo {
     private final byte nbGauge;
 
     public ConfigurationElementsInfo(byte[] payload) {
-        this.version = ((payload[0] << 24) |(payload[1] << 16) |(payload[2] << 8) | payload[3]);
+        this.version = (((payload[0] & 0xff) << 24) |((payload[1] & 0xff) << 16) |((payload[2] & 0xff) << 8) | (payload[3] & 0xff));
         this.nbImg = payload[4];
         this.nbLayout = payload[5];
         this.nbFont = payload[6];

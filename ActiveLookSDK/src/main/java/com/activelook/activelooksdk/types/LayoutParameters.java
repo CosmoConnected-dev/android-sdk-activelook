@@ -59,17 +59,17 @@ public class LayoutParameters {
     public LayoutParameters(byte[] bytes) {
         this(
             (byte) 0,
-            (short) ((bytes[1] << 8) | bytes[2]),
+            (short) (((bytes[1] & 0xff) << 8) | (bytes[2] & 0xff)),
             bytes[3],
-            (short) ((bytes[4] << 8) | bytes[5]),
+            (short) (((bytes[4] & 0xff) << 8) | (bytes[5] & 0xff)),
             bytes[6],
             bytes[7],
             bytes[8],
             bytes[9],
             bytes[10] != 0x00,
-            (short) ((bytes[11] << 8) | bytes[12]),
+            (short) (((bytes[11] & 0xff) << 8) | (bytes[12] & 0xff)),
             bytes[13],
-            Utils.toRotation(bytes[14]),
+            Utils.toRotation((byte)(bytes[14] & 0xff)),
             bytes[15] != 0x00
         );
         final int subSize = bytes[0];
@@ -135,9 +135,9 @@ public class LayoutParameters {
 
     public byte[] toBytes() {
         final byte[] subBytes = this.subCommands.getData();
-        return new Payload()
+        Payload pl = new Payload()
                 .addData(this.id)
-                .addData((byte) subBytes.length)
+                .addData((byte) (subBytes == null ? 0 : subBytes.length))
                 .addData(this.x)
                 .addData(this.y)
                 .addData(this.width)
@@ -149,8 +149,8 @@ public class LayoutParameters {
                 .addData(this.textX)
                 .addData(this.textY)
                 .addData(this.rotation.toBytes())
-                .addData(this.textOpacity)
-                .addData(subBytes).getData();
+                .addData(this.textOpacity);
+        return subBytes == null ? pl.getData() : pl.addData(subBytes).getData();
     }
 
 }

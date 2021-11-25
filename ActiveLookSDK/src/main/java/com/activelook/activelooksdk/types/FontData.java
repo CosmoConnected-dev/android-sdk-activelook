@@ -14,21 +14,26 @@ limitations under the License.
 */
 package com.activelook.activelooksdk.types;
 
+import java.security.InvalidParameterException;
+
 public class FontData {
 
     private final byte[] bytes;
 
+    private final int height;
+
     public FontData(byte[] bytes) {
         this.bytes = new byte[bytes.length];
+        this.height = bytes[1];
         System.arraycopy(bytes, 0, this.bytes, 0, bytes.length);
     }
 
     @Deprecated
     public FontData(byte height, byte[] bytes) {
-        this.bytes = new byte[bytes.length + 2];
-        this.bytes[0] = (byte) 0x01;
-        this.bytes[1] = height;
-        System.arraycopy(bytes, 0, this.bytes, 2, bytes.length);
+        // TODO: change here having data directly in font file.
+        this.height = height;
+        this.bytes = new byte[bytes.length];
+        System.arraycopy(bytes, 0, this.bytes, 0, bytes.length);
     }
 
     public char getFontSize() {

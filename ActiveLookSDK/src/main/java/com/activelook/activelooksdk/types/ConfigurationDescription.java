@@ -30,8 +30,8 @@ public class ConfigurationDescription {
 
     public ConfigurationDescription(String name, byte[] payload) {
         this.name = name;
-        this.size = ((payload[0] << 24) |(payload[1] << 16) |(payload[2] << 8) | payload[3]);
-        this.version = ((payload[4] << 24) |(payload[5] << 16) |(payload[6] << 8) | payload[7]);
+        this.size = (((payload[0]  & 0xFF) << 24) |((payload[1]  & 0xFF) << 16) |((payload[2]  & 0xFF) << 8) | (payload[3]  & 0xFF));
+        this.version = (((payload[4]  & 0xFF) << 24) |((payload[5]  & 0xFF) << 16) |((payload[6]  & 0xFF) << 8) | (payload[7]  & 0xFF));
         this.usageCnt = payload[8];
         this.installCnt = payload[9];
         this.isSystem = payload[10] != (byte) 0x00;

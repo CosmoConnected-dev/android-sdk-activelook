@@ -28,7 +28,7 @@ public class Configuration {
 
     public Configuration(byte[] bytes) {
         this.number = bytes[0];
-        this.id = (bytes[1] << 24) | (bytes[2] << 16) | (bytes[3] << 8) | (bytes[4]);
+        this.id = ((bytes[1] & 0xff) << 24) | ((bytes[2] & 0xff) << 16) | ((bytes[3] & 0xff) << 8) | (bytes[4] & 0xff);
     }
 
     public byte getNumber() {

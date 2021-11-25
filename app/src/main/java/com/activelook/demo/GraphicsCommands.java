@@ -35,9 +35,18 @@ public class GraphicsCommands extends MainActivity2 {
                 item("rectf(13, 23, 20, 10)", glasses -> glasses.rectf(new Point(13, 23), new Point(20, 10))),
                 item("circ(25, 25, 11)", glasses -> glasses.circ(new Point(25, 25), (byte) 11)),
                 item("circf(25, 25, 7)", glasses -> glasses.circf(new Point(25, 25), (byte) 7)),
-                item("txt(30, 30, 0, 1, 10, Bonjour)", glasses -> glasses.txt(new Point(30, 30), Rotation.TOP_LR,
+                item("txt(30, 30, 0, 1, 10, 123456789)", glasses -> glasses.txt(new Point(220, 200), Rotation.TOP_LR,
                         (byte) 1,
                         (byte) 0x0A, "Bonjour")),
+                item("txt(30, 30, 0, 5, 10, 123456789)", glasses -> glasses.txt(new Point(220, 175), Rotation.TOP_LR,
+                        (byte) 5,
+                        (byte) 0x0A, "123456789")),
+                item("txt(30, 30, 0, 6, 10, 123456789)", glasses -> glasses.txt(new Point(220, 125), Rotation.TOP_LR,
+                        (byte) 6,
+                        (byte) 0x0A, "123456789")),
+                item("txt(30, 30, 0, 7, 10, 123456789)", glasses -> glasses.txt(new Point(220, 75), Rotation.TOP_LR,
+                        (byte) 7,
+                        (byte) 0x0A, "123456789")),
                 item("polyline(3 pts)", glasses -> {
                     ArrayList<Point> pts = new ArrayList<>();
                     pts.add(new Point(50, 50));

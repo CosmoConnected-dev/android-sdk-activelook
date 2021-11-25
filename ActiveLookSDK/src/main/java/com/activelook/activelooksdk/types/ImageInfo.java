@@ -34,8 +34,8 @@ public class ImageInfo {
         byte id = 0x00;
         int offset = 0;
         while (offset < bytes.length) {
-            int width = (bytes[offset] << 8) + (bytes[offset + 1]);
-            int height = (bytes[offset + 2] << 8) + (bytes[offset + 3]);
+            int width = ((bytes[offset] & 0xff) << 8) + (bytes[offset + 1] & 0xff);
+            int height = ((bytes[offset + 2] & 0xff) << 8) + (bytes[offset + 3] & 0xff);
             result.add(new ImageInfo(id, width, height));
             offset += 4;
             id++;

@@ -29,10 +29,10 @@ public class SensorParameters {
     public SensorParameters(byte[] payload) {
         this.alsLuma = new short[9];
         for (int i = 0; i < 9; i++) {
-            this.alsLuma[i] = (short) ((payload[i * 2] << 8) | payload[i * 2 + 1]);
+            this.alsLuma[i] = (short) (((payload[i * 2] & 0xff) << 8) | (payload[i * 2 + 1] & 0xff));
         }
-        this.alsPeriod = (short) ((payload[18] << 8) | payload[19]);
-        this.gesturePeriod = (short) ((payload[20] << 8) | payload[21]);
+        this.alsPeriod = (short) (((payload[18] & 0xff) << 8) | (payload[19] & 0xff));
+        this.gesturePeriod = (short) (((payload[20] & 0xff) << 8) | (payload[21] & 0xff));
     }
 
     public SensorParameters(short[] alsLuma, short alsPeriod, short gesturePeriod) {

@@ -36,6 +36,14 @@ public class FreeSpace {
         this.freeSpace = size;
     }
 
+    public long getFreeSpace() {
+        return freeSpace;
+    }
+
+    public long getTotalSize() {
+        return totalSize;
+    }
+
     @Override
     public String toString() {
         return "FreeSpace{" +

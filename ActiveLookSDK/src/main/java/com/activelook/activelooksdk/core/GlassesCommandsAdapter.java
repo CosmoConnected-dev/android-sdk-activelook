@@ -357,6 +357,11 @@ public class GlassesCommandsAdapter implements GlassesCommands {
         for (byte[] chunk : data.getChunks(240)) {
             this.write(new Payload(ID_imgSave).addData(chunk));
         }
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            ;
+        }
     }
 
     @Override
@@ -412,6 +417,11 @@ public class GlassesCommandsAdapter implements GlassesCommands {
         for (byte[] chunk : data.getChunks(240)) {
             this.write(new Payload(ID_fontSave).addData(chunk));
         }
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            ;
+        }
     }
 
     @Override
@@ -432,6 +442,11 @@ public class GlassesCommandsAdapter implements GlassesCommands {
     @Override
     public void layoutSave(LayoutParameters layout) {
         this.write(new Payload(ID_layoutSave).addData(layout.toBytes()));
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            ;
+        }
     }
 
     @Override

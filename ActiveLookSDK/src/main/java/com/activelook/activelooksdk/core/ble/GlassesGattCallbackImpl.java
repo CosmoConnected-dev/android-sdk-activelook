@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.lang.Thread;
 
 class GlassesGattCallbackImpl extends BluetoothGattCallback {
 
@@ -111,29 +112,33 @@ class GlassesGattCallbackImpl extends BluetoothGattCallback {
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicRead(gatt, characteristic, status);
         final BluetoothGattService diService = this.gatt.getService(BleUUID.DeviceInformationService);
+        byte[] charValue = characteristic.getValue();
+        String charValueStr = "null";
+        if (charValue != null) {
+            try {
+                charValueStr = new String(charValue, StandardCharsets.UTF_8);
+            }
+            catch (Exception e){
+                Log.e("onCharacteristicRead", "Char value on char "+ characteristic.toString() +":" + e.toString());
+            }
+        }
         if (characteristic.getUuid().equals(BleUUID.ManufacturerNameCharacteristic)) {
-            this.deviceInfo.setManufacturerName(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setManufacturerName(charValueStr);
             this.gatt.readCharacteristic(diService.getCharacteristic(BleUUID.ModelNumberCharacteristic));
         } else if (characteristic.getUuid().equals(BleUUID.ModelNumberCharacteristic)) {
-            this.deviceInfo.setModelNumber(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setModelNumber(charValueStr);
             this.gatt.readCharacteristic(diService.getCharacteristic(BleUUID.SerialNumberCharacteristic));
         } else if (characteristic.getUuid().equals(BleUUID.SerialNumberCharacteristic)) {
-            this.deviceInfo.setSerialNumber(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setSerialNumber(charValueStr);
             this.gatt.readCharacteristic(diService.getCharacteristic(BleUUID.HardwareVersionCharacteristic));
         } else if (characteristic.getUuid().equals(BleUUID.HardwareVersionCharacteristic)) {
-            this.deviceInfo.setHardwareVersion(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setHardwareVersion(charValueStr);
             this.gatt.readCharacteristic(diService.getCharacteristic(BleUUID.FirmwareVersionCharacteristic));
         } else if (characteristic.getUuid().equals(BleUUID.FirmwareVersionCharacteristic)) {
-            this.deviceInfo.setFirmwareVersion(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setFirmwareVersion(charValueStr);
             this.gatt.readCharacteristic(diService.getCharacteristic(BleUUID.SoftwareVersionCharacteristic));
         } else if (characteristic.getUuid().equals(BleUUID.SoftwareVersionCharacteristic)) {
-            this.deviceInfo.setSoftwareVersion(
-                    new String(characteristic.getValue(), StandardCharsets.UTF_8));
+            this.deviceInfo.setSoftwareVersion(charValueStr);
             this.setOnConnectionFail(null);
             if (this.onConnected != null) {
                 this.onConnected.accept(this.glasses);
@@ -215,6 +220,7 @@ class GlassesGattCallbackImpl extends BluetoothGattCallback {
         super.onDescriptorWrite(gatt, descriptor, status);
         Log.e("onDescriptorWrite", descriptor.getCharacteristic().getUuid().toString());
         if (descriptor.getCharacteristic().getUuid().equals(BleUUID.ActiveLookFlowControlCharacteristic)) {
+            // TODO: why here ???
             this.activateNotification(this.getTxCharacteristic());
         } else if (descriptor.getCharacteristic().getUuid().equals(BleUUID.ActiveLookTxCharacteristic)) {
             this.activateNotification(this.getUiCharacteristic());
@@ -230,6 +236,12 @@ class GlassesGattCallbackImpl extends BluetoothGattCallback {
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         super.onServicesDiscovered(gatt, status);
         if (status == BluetoothGatt.GATT_SUCCESS) {
+            // TODO: should not be done here ???
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             this.activateNotification(this.getFlowControlCharacteristic());
         }
     }
@@ -288,6 +300,11 @@ class GlassesGattCallbackImpl extends BluetoothGattCallback {
             Log.d("unstackWriteCommand", String.format("write rx: %s", Utils.bytesToHexString(buffer)));
             this.getRxCharacteristic().setValue(payload);
             this.gatt.writeCharacteristic(this.getRxCharacteristic());
+        }
+        try {
+            Thread.sleep(60);
+        } catch (InterruptedException e) {
+            ;
         }
     }
 

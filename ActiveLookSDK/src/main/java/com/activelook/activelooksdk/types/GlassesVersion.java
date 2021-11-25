@@ -33,7 +33,7 @@ public class GlassesVersion {
         this.extra = (char) payload[3];
         this.year = payload[4];
         this.week = payload[5];
-        this.serial = (payload[6] << 16) | (payload[7] << 8) | (payload[8] & 0xFF);
+        this.serial = ((payload[6] & 0xff) << 16) | ((payload[7] & 0xff) << 8) | ((payload[8] & 0xff) & 0xFF);
     }
 
     public String getVersion() {
